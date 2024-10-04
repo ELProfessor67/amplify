@@ -200,7 +200,7 @@ const OngoingMeeting = () => {
             <div className='flex flex-1 flex-col md:flex-row relative h-[65vh] '>
               {
                 participantsRef.current && participantsRef.current.filter(participant => (participant.isWebCamMute == false || participant.isShareScreen == true)).length == 0 &&
-                <div className={`md:h-[65vh] h-[30vh] p-2 relative overflow-auto flex-wrap cursor-pointer  flex flex-row justify-start items-center  w-[100%] bg-[#3C3C3C]`}>
+                <div className={`md:h-[65vh] h-[30vh] p-2 relative overflow-auto flex-wrap cursor-pointer  flex flex-row justify-center items-center  w-[100%] bg-[#3C3C3C]`}>
                   {
                     participantsRef.current.map((participant, index) => ({ ...participant, index })).filter(p => p.role.toLowerCase() != "observer").map((participant, index) => (
                       <RenderParticipants key={participant.socketId} onClick={() => setSelected(participant.index)} {...participant} videosElementsRef={videosElementsRef} audiosElementRef={audiosElementRef} socketIdRef={socketIdRef} videoTrackRef={videoTrackRef} index={participant.index} selected={selected} superForceRender={superForceRender} displayTrackRef={displayTrackRef} widthAuto={true}/>
