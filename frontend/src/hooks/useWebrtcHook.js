@@ -156,12 +156,12 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
             delete remoteVideoTracksRef.current[socketId];
           }
           remoteVideoTracksRef.current[socketId] = track;
-          if(videosElementsRef.current[socketId]){
-            videosElementsRef.current[socketId].srcObject = new MediaStream([track])
-            videosElementsRef.current[socketId].play().catch(error => {
-              console.error('Error attempting to play the media:', error);
-            });
-          }
+          // if(videosElementsRef.current[socketId]){
+          //   videosElementsRef.current[socketId].srcObject = new MediaStream([track])
+          //   videosElementsRef.current[socketId].play().catch(error => {
+          //     console.error('Error attempting to play the media:', error);
+          //   });
+          // }
           
         }
       }
@@ -458,7 +458,7 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
           participant.isShareScreen = true;
           participant.isWebCamMute = true;
         }
-        socketRef.current?.emit(MUTE_UNMUTE,{value:false,type:'cam',socketId: socketIdRef.current});
+        socketRef.current?.emit(MUTE_UNMUTE,{value:true,type:'screen',socketId: socketIdRef.current});
         setSelected(participantIndex);
       }else{
 
@@ -467,8 +467,7 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
         if( participant){
           participant.isShareScreen = false;
         }
-        socketRef.current?.emit(MUTE_UNMUTE,{value:true,type:'cam',socketId: socketIdRef.current});
-        setIsScreenShare
+        socketRef.current?.emit(MUTE_UNMUTE,{value:false,type:'screen',socketId: socketIdRef.current});
         setIsScreenShare(false)
       }
 
@@ -518,18 +517,21 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
         console.log(value,type,socketId)
         const participant = participantsRef.current.find((participant) => participant.socketId == socketId);
         const participantIndex = participantsRef.current.findIndex((participant) => participant.socketId == socketId);
-        const myIndex = participantsRef.current.findIndex((participant) => participant.socketId == socketIdRef.current);
+        // const myIndex = participantsRef.current.findIndex((participant) => participant.role == "Moderator");
 
 
         if(participant){
           if(type == 'mic'){
             participant.isMicMute = value;
-          }else{
+          }else if(type == 'cam'){
             participant.isWebCamMute = value;
-            if(!value){
+          }else{
+            if(value){
               setSelected(participantIndex);
+              participant.isShareScreen = value;
+              participant.isWebCamMute = true;
             }else{
-              setSelected(myIndex);
+              participant.isShareScreen = value;
             }
           }
         }
