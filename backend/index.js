@@ -13,7 +13,7 @@ const http = require("http").createServer(app);
 
 const io = require("socket.io")(http, {
   cors: {
-    origin: "*",
+    origin: [process.env.NEXT_PUBLIC_FRONTEND_BASE_URL,"http://localhost:3000"],
     methods: ["GET", "POST"],
   },
     methods: ["GET", "POST"],
