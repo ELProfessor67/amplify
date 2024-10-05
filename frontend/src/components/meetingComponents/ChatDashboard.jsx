@@ -22,7 +22,7 @@ const ChatDashboard = ({ receiverId }) => {
 
   useEffect(() => {
     // Fetch users from the database
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users`)
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
@@ -36,7 +36,7 @@ const ChatDashboard = ({ receiverId }) => {
 
   useEffect(() => {
     const newSocket = io(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/user-namespace`,
+      `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/user-namespace`,
       {
         auth: {
           token: user._id,
@@ -76,7 +76,7 @@ const ChatDashboard = ({ receiverId }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/save-chat`, {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/save-chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

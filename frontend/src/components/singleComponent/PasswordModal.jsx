@@ -35,7 +35,7 @@ const PasswordModal = ({ onClose, id }) => {
       let token = localStorage.getItem("Token");
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/reset_password'`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/reset_password'`,
           {
             token: token,
             newPassword: newPassword,

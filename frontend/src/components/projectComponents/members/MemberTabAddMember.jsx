@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "@/components/shared/button";
 
-const MemberTabAddMember = ({ onClose, project, fetchProjects, userId }) => {
+const MemberTabAddMember = ({ onClose, project,  userId, setLocalProjectState }) => {
   const [peoples, setPeoples] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState({});
-
   const fetchContacts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create/contact-from-member-tab/${userId}/${project._id}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/create/contact-from-member-tab/${userId}/${project?._id}`
       );
       setPeoples(response.data);
     } catch (error) {
@@ -17,7 +16,6 @@ const MemberTabAddMember = ({ onClose, project, fetchProjects, userId }) => {
     }
   };
 
-  console.log("peoples", peoples);
 
   useEffect(() => {
     fetchContacts();
@@ -54,18 +52,18 @@ const MemberTabAddMember = ({ onClose, project, fetchProjects, userId }) => {
         roles: selectedRoles[person._id],
       }));
 
-    console.log("selectedPeople and project id", project._id, selectedPeople);
 
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/app-people-to-project`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/app-people-to-project`,
         {
           projectId: project._id,
           people: selectedPeople,
         }
       );
-      console.log(response);
-      fetchProjects(userId);
+      if (response.status === 200) {
+        setLocalProjectState(response.data.updatedProject);
+      }
       onClose();
     } catch (error) {
       console.error("Error adding people:", error);
@@ -74,7 +72,7 @@ const MemberTabAddMember = ({ onClose, project, fetchProjects, userId }) => {
 
   // Function to copy the registration link
   const handleCopyLink = () => {
-    navigator.clipboard.writeText("https://new-amplify-fe-kj4c.vercel.app/register");
+    navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_FRONTEND_BASE_URL}/register`);
     alert("Link copied to clipboard!");
   };
 

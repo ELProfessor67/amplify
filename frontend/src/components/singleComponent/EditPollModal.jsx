@@ -17,7 +17,7 @@ const EditPollModal = ({ onClose, formData, setFormData, polls }) => {
     const fetchPollById = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get/poll-id/${polls}`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/get/poll-id/${polls}`
         );
         setPoll(response.data);
         setLoading(false);
@@ -111,7 +111,7 @@ const EditPollModal = ({ onClose, formData, setFormData, polls }) => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/update-poll/${polls}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/update-poll/${polls}`,
         {
           pollName: newPoll.name,
           isActive: newPoll.active,

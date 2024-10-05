@@ -17,19 +17,12 @@ const page = () => {
   const fullName = searchParams.get("fullName");
   const userRole = searchParams.get("role");
 
-  console.log(
-    "params id",
-    params.id,
-    "fullName",
-    fullName,
-    "userRole",
-    userRole
-  );
+ 
 
   const getStreamingStatus = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-streaming-status/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-streaming-status/${meetingId}`
       );
 
       if (response.data.isStreaming) {

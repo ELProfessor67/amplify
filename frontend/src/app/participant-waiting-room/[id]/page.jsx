@@ -18,21 +18,12 @@ const page = () => {
   const userRole = searchParams.get("role");
   const [participants, setParticipants] = useState([]);
 
-  console.log(
-    "params id",
-    params.id,
-    "fullName",
-    fullName,
-    "userRole",
-    userRole,
-    "participants",
-    participants
-  );
+  
 
   const getParticipantList = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/participant-list/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/participant-list/${meetingId}`
       );
       setParticipants(response?.data?.participantsList);
 

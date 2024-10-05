@@ -48,7 +48,7 @@ const ModeratorTable = () => {
   const fetchModerators = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/get-all/moderator?page=1&limit=10`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/get-all/moderator?page=1&limit=10`
       );
       const data = await response.json();
       setModerators(data.moderators);
@@ -135,7 +135,7 @@ const ModeratorTable = () => {
   const handleDeleteModerator = async (moderatorId) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delete/moderator?id=${moderatorId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/delete/moderator?id=${moderatorId}`,
         {
           method: "DELETE",
         }
@@ -169,7 +169,7 @@ const ModeratorTable = () => {
   const handleInviteModerator = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/moderator-invitation/link'`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/moderator-invitation/link'`,
         {
           method: "POST",
           headers: {

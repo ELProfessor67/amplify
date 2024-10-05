@@ -60,6 +60,7 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
   const socketIdRef = useRef(null);
   const usermediaRef = useRef(null);
   const remoteVideoTracksRef = useRef({});
+  const handleJoinCallAlreadyExist = useRef(false);
 
 
 
@@ -315,7 +316,13 @@ const useWebrtcManage = (room_id, username,isWebCamMute,isMicMute,videoCanvasRef
 
     // functions
     const handleJoin = useCallback(async () => {
+      
 
+      if(handleJoinCallAlreadyExist.current){
+        return
+      }
+
+      handleJoinCallAlreadyExist.current = true;
       socketRef.current?.emit(JOIN_ROOM, { room_id, username,isMicMute:isMicMuteRef.current,isWebCamMute:isWebCamMuteRef.current,role }, async (socketId, rtpCapabilities, participants) => {
         setSocketId(socketId);
         socketIdRef.current = socketId;

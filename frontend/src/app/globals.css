@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-*
-{
-  box-sizing: border-box;
-}
 body {
   font-family: 'Montserrat', sans-serif;
 }
@@ -44,6 +40,7 @@ body {
   color: #FF6600;
   font-size: 22px;
 }
+
 
 .title-notification {
   display: none;

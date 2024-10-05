@@ -51,7 +51,6 @@ const Page = () => {
   const [userData, setUserData] = useState(null);
   const router = useRouter();
   const { id } = useParams();
-  console.log("id in my profile page", id);
   const handlePasswordChangeClick = () => {
     setShowModal(true);
   };
@@ -91,7 +90,7 @@ const Page = () => {
   const deleteUser = async () => {
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/delete-by-id`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/delete-by-id`,
         {
           params: { id: id }, // replace with actual user ID
         }
@@ -113,7 +112,7 @@ const Page = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/find-by-id`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/find-by-id`,
           {
             params: { id: id },
           }

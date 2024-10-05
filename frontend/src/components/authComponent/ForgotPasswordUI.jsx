@@ -22,7 +22,7 @@ const ForgotPasswordUI = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/forgotPassword`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/users/forgotPassword`,
         {
           email: email,
         }

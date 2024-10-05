@@ -109,7 +109,7 @@ const ContactTable = ({
   const handleDeleteContact = async (contactId) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delete/contact/${contactId}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/delete/contact/${contactId}`,
         {
           method: "DELETE",
         }

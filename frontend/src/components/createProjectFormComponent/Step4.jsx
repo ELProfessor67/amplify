@@ -23,7 +23,7 @@ const Step4 = ({ formData, setFormData }) => {
     const fetchBreakoutRooms = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/get-all-breakout-rooms`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/get-all-breakout-rooms`,
           {
             params: { page: 1, limit: 10 },
           }
@@ -65,7 +65,7 @@ const Step4 = ({ formData, setFormData }) => {
     const roomToDelete = formData.breakoutRooms[index];
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/delete-breakout-room/${roomToDelete._id}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/delete-breakout-room/${roomToDelete._id}`
       );
       const updatedBreakoutRooms = formData.breakoutRooms.filter(
         (_, i) => i !== index

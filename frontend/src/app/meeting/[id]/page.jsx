@@ -16,7 +16,7 @@ const page = () => {
   const { user } = useGlobalContext();
   const fullName = searchParams.get("fullName");
   const userRole = searchParams.get("role");
-
+  const [meetingDetails, setMeetingDetails] = useState([])
   const [users, setUsers] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [observers, setObservers] = useState([]);
@@ -257,7 +257,7 @@ const page = () => {
     const getRemovedParticipantsList = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-removed-participants-list/${params.id}`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-removed-participants-list/${params.id}`
         );
 
         // Check if the current user has been removed
@@ -284,10 +284,28 @@ const page = () => {
     };
   }, [fullName, params.id, router]);
 
+  // Use effect for getting meeting details
+  useEffect(() => {
+    getMeetingDetails(params.id);
+  }, [params.id]);
+
+  const getMeetingDetails = async (meetingId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/get-single-meeting/${meetingId}`
+      );
+      setMeetingDetails(response?.data?.meetingDetails);
+    } catch (error) {
+      console.error("Error in getting meeting details", error);
+    }
+  };
+
+  console.log('meeting details', meetingDetails);
+
   const getWaitingList = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/waiting-list/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/waiting-list/${meetingId}`
       );
       setWaitingRoom(response?.data?.waitingRoom);
     } catch (error) {
@@ -298,7 +316,7 @@ const page = () => {
   const getParticipantList = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/participant-list/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/participant-list/${meetingId}`
       );
       setParticipants(response?.data?.participantsList);
     } catch (error) {
@@ -309,7 +327,7 @@ const page = () => {
   const getObserverList = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/observer-list/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/observer-list/${meetingId}`
       );
       setObservers(response?.data?.observersList);
     } catch (error) {
@@ -320,7 +338,7 @@ const page = () => {
   const acceptParticipant = async (participant) => {
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/accept-from-waiting-list`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/accept-from-waiting-list`,
         {
           participant: participant,
           meetingId: params.id,
@@ -334,7 +352,7 @@ const page = () => {
   const getMeetingStatus = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-meeting-status/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-meeting-status/${meetingId}`
       );
 
       if (response?.data?.meetingStatus === true) {
@@ -350,7 +368,7 @@ const page = () => {
   const getWebRtcMeetingId = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-webrtc-meeting-id/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-webrtc-meeting-id/${meetingId}`
       );
       // https://serverzoom-mpbv.onrender.com/room/
       // https://testing--inspiring-cendol-60afd6.netlify.app
@@ -365,7 +383,7 @@ const page = () => {
   const getIframeLinkMeetingId = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-iframe-link/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-iframe-link/${meetingId}`
       );
       // https://serverzoom-mpbv.onrender.com/room/
       // https://testing--inspiring-cendol-60afd6.netlify.app
@@ -382,7 +400,7 @@ const page = () => {
   const sendMessageParticipant = async (message) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/send-message-to-participant`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/send-message-to-participant`,
         {
           message: message,
           meetingId: params.id,
@@ -398,7 +416,7 @@ const page = () => {
   const sendMessageObserver = async (message) => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/send-message-to-observer`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/send-message-to-observer`,
         {
           message: message,
           meetingId: params.id,
@@ -415,7 +433,7 @@ const page = () => {
   const getParticipantChat = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-participant-chat/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-participant-chat/${meetingId}`
       );
 
       if (
@@ -431,7 +449,7 @@ const page = () => {
   const getObserverChat = async (meetingId) => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/get-observer-chat/${meetingId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/get-observer-chat/${meetingId}`
       );
 
       if (response?.data?.message === "Observers chat retrieved successfully") {
@@ -445,7 +463,7 @@ const page = () => {
   const removeParticipant = async (name, role, meetingId) => {
     try {
       response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/remove-participant-from-meeting`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/remove-participant-from-meeting`,
         {
           name: name,
           role: role,
@@ -463,7 +481,7 @@ const page = () => {
   const participantLeft = async (name, role, meetingId) => {
     try {
       response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/remove-participant-from-meeting`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/remove-participant-from-meeting`,
         {
           name: name,
           role: role,
@@ -482,7 +500,7 @@ const page = () => {
   const setStartStreaming = async (meetingId) => {
     try {
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/live-meeting/start-streaming`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/live-meeting/start-streaming`,
         {
           meetingId: meetingId,
         }
@@ -493,7 +511,6 @@ const page = () => {
       }
 
       // Log the success response
-      console.log("Streaming started successfully:", response.data);
     } catch (error) {
       // Check for a specific error message
       if (error?.response?.data?.message === "Participant not found") {
@@ -557,6 +574,7 @@ const page = () => {
                 setBreakoutRooms={setBreakoutRooms}
                 projectStatus={projectStatus}
                 iframeLink={iframeLink}
+                meetingDetails={meetingDetails}
               />
             </div>
           </>
@@ -604,6 +622,7 @@ const page = () => {
                 setBreakoutRooms={setBreakoutRooms}
                 projectStatus={projectStatus}
                 iframeLink={iframeLink}
+                meetingDetails={meetingDetails}
               />
             </div>
             <div className="h-full">
@@ -656,6 +675,7 @@ const page = () => {
                 setBreakoutRooms={setBreakoutRooms}
                 projectStatus={projectStatus}
                 iframeLink={iframeLink}
+                meetingDetails={meetingDetails}
               />
             </div>
             <div className="h-full">

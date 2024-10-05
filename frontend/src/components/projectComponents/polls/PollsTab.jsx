@@ -9,7 +9,7 @@ import axios from "axios";
 import AddPollModal from "./AddPollModal";
 import Button from "@/components/shared/button";
 
-const PollsTab = ({ project, fetchProjects, userId, polls }) => {
+const PollsTab = ({ project,  polls, setPolls, setLocalProjectState }) => {
   const [selectedPoll, setSelectedPoll] = useState(null);
   const [isViewPollModalOpen, setIsViewPollModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,13 +29,13 @@ const PollsTab = ({ project, fetchProjects, userId, polls }) => {
     setIsLoading(true);
     try {
       const response = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/change-active-status/${poll._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/change-active-status/${poll._id}`,
         { isActive: newStatus }
       );
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        fetchProjects(userId);
+        setPolls(response.data.polls);
       }
     } catch (error) {
       console.error("Error updating poll status:", error);
@@ -61,12 +61,12 @@ const PollsTab = ({ project, fetchProjects, userId, polls }) => {
     setIsLoading(true);
     try {
       const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/delete/poll/${pollId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/delete/poll/${pollId}`
       );
 
       if (response.status === 200) {
         toast.success(response.data.message);
-        fetchProjects(userId);
+        setPolls(response.data.polls);
       }
     } catch (error) {
       console.error("Error deleting poll:", error);
@@ -144,7 +144,7 @@ const PollsTab = ({ project, fetchProjects, userId, polls }) => {
                     children={"Active"}
                     disabled={poll.isActive || isLoading}
                     onClick={() => handleStatusChange(poll, true)}
-                    className=" font-semibold "
+                    className={` font-semibold ${poll.isActive ? "" : "text-gray-500"}`}
                     variant="plain"
                     type="button"
                   />
@@ -153,7 +153,7 @@ const PollsTab = ({ project, fetchProjects, userId, polls }) => {
                     children={"Inactive"}
                     disabled={!poll.isActive || isLoading}
                     onClick={() => handleStatusChange(poll, false)}
-                    className=" font-semibold "
+                    className={` font-semibold ${poll.isActive ? "text-gray-500" : ""}`}
                     variant="plain"
                     type="button"
                   />
@@ -172,7 +172,8 @@ const PollsTab = ({ project, fetchProjects, userId, polls }) => {
           onClose={handleCloseAddModal}
           pollToEdit={selectedPoll}
           project={project}
-          fetchProjects={fetchProjects}
+          setLocalProjectState={setLocalProjectState}
+           setPolls={setPolls}
         />
       )}
     </div>

@@ -9,7 +9,7 @@ import "./style.css";
 const WhiteBoard = ({ role, users }) => {
   const drawonCanvas = () => {
     const root = {};
-    root.socket = io.connect(`${process.env.NEXT_PUBLIC_BACKEND_URL}`);
+    root.socket = io.connect(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}`);
 
     root.socket.on("canvas-data", (data) => {
       const image = new window.Image();

@@ -33,7 +33,7 @@ const EditModeratorModal = ({
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/update/moderator/${user._id}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/update/moderator/${user._id}`,
         {
           method: "PUT",
           headers: {

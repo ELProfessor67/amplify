@@ -10,7 +10,7 @@ import { FiMinus } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { IoTrashSharp } from "react-icons/io5";
 
-const AddPollModal = ({ onClose, pollToEdit, project, fetchProjects }) => {
+const AddPollModal = ({ onClose, pollToEdit, project, setLocalProjectState, setPolls }) => {
   const { user } = useGlobalContext();
   const [newPoll, setNewPoll] = useState({
     pollName: "",
@@ -26,7 +26,6 @@ const AddPollModal = ({ onClose, pollToEdit, project, fetchProjects }) => {
 
   useEffect(() => {
     if (pollToEdit) {
-      console.log("pollToEdit:", pollToEdit);
       setNewPoll(pollToEdit);
     }
   }, [pollToEdit]);
@@ -97,39 +96,39 @@ const AddPollModal = ({ onClose, pollToEdit, project, fetchProjects }) => {
         questions: newPoll.questions,
       };
 
-      console.log("data to send:", dataToSend);
-
       if (pollToEdit) {
         // If editing, send PUT request to update the poll
         const response = await axios.put(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/update-poll/${pollToEdit._id}`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/update-poll/${pollToEdit._id}`,
           dataToSend
         );
 
         if (response.status === 200) {
+          setPolls(response.data.polls)
           toast.success("Poll updated successfully");
         }
       } else {
         // If adding a new poll, send POST request
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create/poll`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/create/poll`,
           dataToSend
         );
 
+        console.log('response form addd poll', response.data)
         if (response.status === 201) {
+          setPolls(response.data.polls)
           toast.success("Poll created successfully");
         }
       }
 
-      fetchProjects(); // Refresh project data
-      onClose(); // Close the modal
+      
+            onClose(); // Close the modal
     } catch (error) {
       console.error("Error saving the poll:", error);
       toast.error("Error saving the poll");
     }
   };
 
-  console.log("new poll", newPoll);
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">

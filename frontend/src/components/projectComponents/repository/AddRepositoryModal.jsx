@@ -8,12 +8,13 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { IoChevronDown, IoChevronUp } from "react-icons/io5";
 
-const AddRepositoryModal = ({ onClose, project, meetings, fetchProjects }) => {
+const AddRepositoryModal = ({ onClose, project, meetings, setLocalProjectState, fetchRepositories }) => {
   const { user } = useGlobalContext();
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedMeeting, setSelectedMeeting] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
 
   // Handle file input change
   const handleFileChange = (event) => {
@@ -50,14 +51,12 @@ const AddRepositoryModal = ({ onClose, project, meetings, fetchProjects }) => {
     formData.append("addedDate", new Date().toISOString());
     formData.append("meetingId", selectedMeeting);
     formData.append("projectId", project._id);
-    for (let pair of formData.entries()) {
-      console.log(`${pair[0]}: ${pair[1]}`);
-    }
+   
     try {
       setIsLoading(true);
       // Make the API call to upload the file
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/create/repository`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/create/repository`,
         formData,
         {
           headers: {
@@ -65,9 +64,8 @@ const AddRepositoryModal = ({ onClose, project, meetings, fetchProjects }) => {
           },
         }
       );
-      console.log("response.data", response.data);
       toast.success(`${response.data.message}`);
-      fetchProjects();
+      fetchRepositories(project._id)
       onClose();
     } catch (error) {
       console.error("Error uploading file:", error);

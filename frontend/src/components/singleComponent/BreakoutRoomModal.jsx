@@ -42,7 +42,7 @@ const BreakoutRoomModal = ({ onClose, formData, setFormData, roomToEdit }) => {
   const handleSave = async () => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/create-breakout-room'`,
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/create-breakout-room'`,
         {
           project: "66b09e0fa55a6fb9481f7f77", // assuming you have projectId in formData
           name: newRoom.name,

@@ -36,7 +36,7 @@ const RightSidebarOpenUi = ({
   const fetchFiles = async () => {
     try {
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/files`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/files`
       );
       setFileList(response.data);
     } catch (error) {
@@ -56,7 +56,7 @@ const RightSidebarOpenUi = ({
 
       try {
         await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/upload`,
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/upload`,
           formData,
           {
             headers: {
@@ -65,7 +65,7 @@ const RightSidebarOpenUi = ({
           }
         );
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/files`
+          `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/files`
         );
         setFileList(response.data);
       } catch (error) {
@@ -77,10 +77,10 @@ const RightSidebarOpenUi = ({
   const handleDeleteFile = async (fileId) => {
     try {
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/files/${fileId}`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/files/${fileId}`
       );
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/files`
+        `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/api/files`
       );
       setFileList(response.data);
     } catch (error) {
