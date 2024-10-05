@@ -23,7 +23,7 @@ const io = require("socket.io")(http, {
 dotenv.config();
 app.use(
   cors({
-    origin: [process.env.NEXT_PUBLIC_FRONTEND_BASE_URL,"https://new-amplify-fe-kj4c.vercel.app", "http://localhost:3000", "http://localhost:3001","http://localhost:5173" ],
+    origin: [process.env.FRONTEND_BASE_URL,"https://new-amplify-fe-kj4c.vercel.app", "http://localhost:3000", "http://localhost:3001","http://localhost:5173" ],
   })
 );
 app.use(express.json());
